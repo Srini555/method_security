@@ -58,4 +58,8 @@ public class UserUserDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public User getUsr() {
+        return usr;
+    }
 }

@@ -85,7 +85,9 @@ public class Runner implements ApplicationRunner {
 
         attemptAccess(amisoft.getEmail(),job.getEmail(),messageAmisoft.getId(), this.messageRepository::findByIdSecured);
 
-        //attemptAccess(amisoft.getEmail(),job.getEmail(),messageAmisoft.getId(), this.messageRepository::findByIdPreAuthorize);
+        attemptAccess(amisoft.getEmail(),job.getEmail(),messageAmisoft.getId(), this.messageRepository::findByIdPreAuthorized);
+
+        attemptAccess(amisoft.getEmail(),job.getEmail(),messageAmisoft.getId(), this.messageRepository::findByIdPostAuthorized);
 
     }
 }

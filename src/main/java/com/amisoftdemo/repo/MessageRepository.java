@@ -4,6 +4,8 @@ import com.amisoftdemo.entity.Message;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.security.RolesAllowed;
@@ -24,7 +26,14 @@ public interface MessageRepository extends JpaRepository<Message,Long> {
 
 
 
-  /*  @Query(QUERY)
+    @Query(QUERY)
     @PreAuthorize("hasRole('ADMIN')")
-    Message findByIdPreAuthorized(Long id);*/
+    Message findByIdPreAuthorized(Long id);
+
+
+    @Query(QUERY)
+    @PostAuthorize("@authz.check(returnObject, principle?.user) ")
+    Message findByIdPostAuthorized(Long id);
+
+
 }
