@@ -1,6 +1,8 @@
 package com.amisoftdemo.repo;
 
 import com.amisoftdemo.entity.Message;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.access.annotation.Secured;
@@ -32,8 +34,11 @@ public interface MessageRepository extends JpaRepository<Message,Long> {
 
 
     @Query(QUERY)
-    @PostAuthorize("@authz.check(returnObject, principle?.user) ")
+    @PostAuthorize("@authz.check(returnObject, principal?.usr ) ")
     Message findByIdPostAuthorized(Long id);
+
+    @Query("select m from Message m where m.to.id = ?#{  principal?.usr?.id  }")
+    Page<Message> findMessagesFor(Pageable pageable);
 
 
 }

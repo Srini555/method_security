@@ -3,17 +3,19 @@ package com.amisoftdemo.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
+import java.util.Date;
 
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@EntityListeners(AuditingEntityListener.class)
 public class Message {
 
 
@@ -25,6 +27,13 @@ public class Message {
 
     @OneToOne
     private User to;
+
+    @CreatedBy
+    private String createdBy;
+
+    @CreatedDate
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created;
 
 
     public Message(String text, User to) {

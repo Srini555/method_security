@@ -10,6 +10,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -77,6 +78,12 @@ public class Runner implements ApplicationRunner {
 
         User job = this.userRepository.save(new User("job", "password2", user));
 
+        this.messageRepository.save(new Message("Hi 1", job));
+        this.messageRepository.save(new Message("Hi 2", job));
+
+        this.messageRepository.save(new Message("Hi 1", amisoft));
+
+
 
         log.info("Amisoft" +amisoft.toString());
         log.info("job" +job.toString());
@@ -88,6 +95,16 @@ public class Runner implements ApplicationRunner {
         attemptAccess(amisoft.getEmail(),job.getEmail(),messageAmisoft.getId(), this.messageRepository::findByIdPreAuthorized);
 
         attemptAccess(amisoft.getEmail(),job.getEmail(),messageAmisoft.getId(), this.messageRepository::findByIdPostAuthorized);
+
+
+        authenticate(job.getEmail());
+        this.messageRepository.findMessagesFor(PageRequest.of(0, 5)).forEach(log::info);
+
+        authenticate(amisoft.getEmail());
+        this.messageRepository.findMessagesFor(PageRequest.of(0, 5)).forEach(log::info);
+
+        log.info("audited: "
+                + this.messageRepository.save(new Message("this is a test", job)));
 
     }
 }
